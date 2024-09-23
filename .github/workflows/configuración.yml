@@ -21,12 +21,12 @@ jobs:
       run: npm ci
 
     - name: Run Cypress tests
-      run: npx cypress run --config supportFile=false
+      run: npx cypress run --project cypress-project
 
     - name: Run Postman/Newman tests
       run: |
         npm install -g newman
-        newman run Rick&Morty.postman_collection.json
+        newman run postman-project/Rick&Morty.postman_collection.json
 
     - name: Upload test results
       uses: actions/upload-artifact@v3
