@@ -31,4 +31,4 @@ jobs:
         run: npm install -g newman
 
       - name: Run Postman tests
-        run: newman run postman-project/collection.json
+        run: newman run postman-project/Rick&Morty.postman_collection.json
