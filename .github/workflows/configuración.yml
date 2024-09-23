@@ -1,34 +1,39 @@
-name: CI Pipeline
+name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20.17.0'
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: |
+        npm ci
 
-      - name: Run Cypress tests
-        run: npx cypress run --project cypress-project
+    - name: Run Cypress tests
+      run: npm run test:cypress
 
-      - name: Install Newman
-        run: npm install -g newman
+    - name: Run Postman/Newman tests
+      run: |
+        npm install -g newman
+        newman run Rick&Morty.postman_collection.json
 
-      - name: Run Postman tests
-        run: newman run postman-project/Rick&Morty.postman_collection.json
+    - name: Upload test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: |
+          cypress/screenshots
+          cypress/videos
+          newman/
