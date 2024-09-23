@@ -21,7 +21,7 @@ jobs:
       run: npm ci
 
     - name: Run Cypress tests
-      run: npx cypress run
+      run: npx cypress run --config supportFile=false
 
     - name: Run Postman/Newman tests
       run: |
